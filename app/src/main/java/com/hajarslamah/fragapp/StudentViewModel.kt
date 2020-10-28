@@ -6,13 +6,18 @@ class StudentViewModel:ViewModel() {
 
     val students= mutableListOf<Student>()
     init {
-        for (i in 0 until 200) {
+        for (i in 0 until 20) {
          val student=Student()
 
             student.name= "Student"+ i
             student.num=i
-               student.pass=i % 2 ==1
+               student.pass=i % 2 ==0
             students+=student
         }
+
         }
+    fun addStudent(student: Student){
+        students.add(student)
+
+    }
 }
