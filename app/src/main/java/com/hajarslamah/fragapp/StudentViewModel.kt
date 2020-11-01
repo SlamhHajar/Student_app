@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 class StudentViewModel:ViewModel() {
 
     val students= mutableListOf<Student>()
+
     init {
-        for (i in 0 until 20) {
+        for (i in 0 until 5) {
          val student=Student()
 
             student.name= "Student"+ i
@@ -20,4 +21,16 @@ class StudentViewModel:ViewModel() {
         students.add(student)
 
     }
+    fun deletStudent(pos: Int){
+        students.removeAt(pos)
+
+
+    }
+
+
+
+
+
+
+
 }

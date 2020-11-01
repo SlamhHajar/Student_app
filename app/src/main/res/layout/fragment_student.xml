@@ -3,30 +3,40 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
+
     >
-    <TextView
-        android:id="@+id/student_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp"
-        android:textColor="@android:color/black"
-        android:text="Student Name"/>
     <TextView
         android:id="@+id/stud_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_margin="12dp"
         android:textColor="@android:color/black"
+       android:textFontWeight="@android:integer/config_longAnimTime"
         android:text="Student Number"/>
+
+    <TextView
+        android:id="@+id/student_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:textColor="@android:color/black"
+        android:text="Student Name"/>
     <TextView
         android:id="@+id/stud_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
 android:textColor="@android:color/black"
-        android:layout_margin="20dp"
+        android:layout_margin="12dp"
         android:text="Student pass"/>
+    <ImageButton
+        android:id="@+id/stud_delet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_delete"
 
+       /> >
 
 </LinearLayout>
     <!--<Button
