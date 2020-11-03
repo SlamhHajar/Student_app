@@ -33,7 +33,7 @@ class InputDialogFragment:DialogFragment() {
 
 interface Callbacks {
     fun onStudentAdded(student: Student)
-    fun deletedStudent(pos: Int)
+   // fun deletedStudent(pos: Int)
 
 }
 }

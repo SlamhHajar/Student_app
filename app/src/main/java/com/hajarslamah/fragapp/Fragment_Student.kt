@@ -1,5 +1,6 @@
 package com.hajarslamah.fragapp
 
+import android.app.ProgressDialog.show
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_student.*
 import kotlinx.android.synthetic.main.fragment_student_list.*
 import java.util.*
 
-class Fragment_Student: Fragment(),InputDialogFragment.Callbacks {
+class Fragment_Student: Fragment(),InputDialogFragment.Callbacks,DeleteDialogFragment.DeletedCallbacks {
 
     private val studentListViewModel: StudentViewModel by lazy {
         ViewModelProviders.of(this).get(StudentViewModel::class.java)
@@ -28,8 +29,9 @@ class Fragment_Student: Fragment(),InputDialogFragment.Callbacks {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.student_mune, menu)    }
-    private var adapter: StudentAdapter? = null
-private lateinit var studentRecyclerView: RecyclerView
+  //  private var adapter: StudentAdapter? = null
+    private var adapter: StudentAdapter? = StudentAdapter(emptyList())
+    private lateinit var studentRecyclerView: RecyclerView
 private lateinit var newStudentButton: ImageButton
     private lateinit var emptyTextView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,16 +75,18 @@ override fun onCreateView(
             show(this@Fragment_Student.requireFragmentManager(),"Input")
 
         }}
-    updateView()
+   studentRecyclerView.adapter = adapter
+    //updateView()
     return view
 }
-    private fun updateView() {
+    private fun updateView( students: List<Student>) {
 
-        val students = studentListViewModel.students
+       // val students = studentListViewModel.students
         adapter = StudentAdapter(students)
         studentRecyclerView.adapter = adapter
         }
-//////////////////////////////////////////////////////////////////Holder to store the data and inflate to item////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////Holder to store the data and inflate to item////////////////////////////////
     private inner class StudentHolder(view: View)
         : RecyclerView.ViewHolder(view) , View.OnClickListener{
              private lateinit var student: Student
@@ -94,6 +98,17 @@ override fun onCreateView(
                  //  val newButton: Button = itemView.findViewById(R.id.newStudent)
                    init {
                   itemView.setOnClickListener(this)
+                     deleteButton.setOnClickListener {
+                         DeleteDialogFragment().apply{
+                             setTargetFragment(this@Fragment_Student,0)
+                             show(this@Fragment_Student.requireFragmentManager(),"de")
+                             // studentListViewModel.students.removeAt(position)
+                             //  notifyDataSetChanged()
+                             // updateView()
+                             // Toast.makeText(context, " Hi I'm Hajar *__-", Toast.LENGTH_SHORT) .show()
+                         }
+
+                     }
                  }
             fun bind(student:Student ) {
           this.student = student
@@ -127,15 +142,7 @@ override fun onCreateView(
             holder.apply {
                 holder.bind(student)
 
-          deleteButton.setOnClickListener {
-              deletedStudent(position)
-            // studentListViewModel.students.removeAt(position)
-                  //  notifyDataSetChanged()
-                   // updateView()
-                   // Toast.makeText(context, " Hi I'm Hajar *__-", Toast.LENGTH_SHORT) .show()
-}
-
-            }}
+          }}
         ////////////////////////to return  size of array
         override fun getItemCount(): Int {
             if(students.isEmpty()){
@@ -152,7 +159,17 @@ override fun onCreateView(
 
     }
 
-       override fun onStart() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        studentListViewModel.studentListLiveData.observe(
+            viewLifecycleOwner,
+             { students ->
+                students?.let {
+
+                    updateView(students)
+
+                }        })    }
+    override fun onStart() {
 
   super.onStart()
 
@@ -164,12 +181,19 @@ override fun onCreateView(
 
     override fun onStudentAdded(student: Student) {
      studentListViewModel.addStudent(student)
-        updateView()
+        studentListViewModel.updateStudent(student)
+
     }
 
-    override fun deletedStudent(pos: Int) {
-        studentListViewModel.deletStudent(pos)
-        updateView()
+//    override fun deletedStudent(pos: Int) {
+//        studentListViewModel.deletStudent(pos)
+//        updateView()
+//    }
+
+    override fun deletedStudent(student: Student) {
+        studentListViewModel.deletStudent(student)
+
+
     }
 
 }
