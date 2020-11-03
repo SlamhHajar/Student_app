@@ -75,6 +75,7 @@ override fun onCreateView(
             show(this@Fragment_Student.requireFragmentManager(),"Input")
 
         }}
+
    studentRecyclerView.adapter = adapter
     //updateView()
     return view
@@ -98,17 +99,7 @@ override fun onCreateView(
                  //  val newButton: Button = itemView.findViewById(R.id.newStudent)
                    init {
                   itemView.setOnClickListener(this)
-                     deleteButton.setOnClickListener {
-                         DeleteDialogFragment().apply{
-                             setTargetFragment(this@Fragment_Student,0)
-                             show(this@Fragment_Student.requireFragmentManager(),"de")
-                             // studentListViewModel.students.removeAt(position)
-                             //  notifyDataSetChanged()
-                             // updateView()
-                             // Toast.makeText(context, " Hi I'm Hajar *__-", Toast.LENGTH_SHORT) .show()
-                         }
 
-                     }
                  }
             fun bind(student:Student ) {
           this.student = student
@@ -141,7 +132,17 @@ override fun onCreateView(
             val student=students[position]
             holder.apply {
                 holder.bind(student)
+                deleteButton.setOnClickListener {
+                    DeleteDialogFragment().apply{
+                        setTargetFragment(this@Fragment_Student,0)
+                        show(this@Fragment_Student.requireFragmentManager(),"deleted")
+                        // studentListViewModel.students.removeAt(position)
+                        //  notifyDataSetChanged()
+                        // updateView()
+                        // Toast.makeText(context, " Hi I'm Hajar *__-", Toast.LENGTH_SHORT) .show()
+                    }
 
+                }
           }}
         ////////////////////////to return  size of array
         override fun getItemCount(): Int {
